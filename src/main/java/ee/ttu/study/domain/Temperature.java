@@ -7,5 +7,5 @@ public class Temperature {
   private Double lowest;
   private Double highest;
   private Double mean;
-  private Double current;
+  private final Double current;
 }

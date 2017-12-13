@@ -1,30 +1,19 @@
 package ee.ttu.study.engine;
 
-import ee.ttu.study.module.HeatingControl;
-import ee.ttu.study.module.SecurityCenter;
-import ee.ttu.study.module.WaterSupply;
-import ee.ttu.study.module.WeatherMonitor;
+import ee.ttu.study.module.Module;
 import lombok.extern.java.Log;
+
+import java.util.List;
 
 @Log
 public class SmartHouseEngine {
-  private final HeatingControl heatingControl;
-  private final WaterSupply waterSupply;
-  private final WeatherMonitor weatherMonitor;
-  private final SecurityCenter securityCenter;
+  private final List<Module> modules;
 
-  public SmartHouseEngine(
-      final HeatingControl heatingControl,
-      final WaterSupply waterSupply,
-      final WeatherMonitor weatherMonitor,
-      final SecurityCenter securityCenter) {
-    this.heatingControl = heatingControl;
-    this.waterSupply = waterSupply;
-    this.weatherMonitor = weatherMonitor;
-    this.securityCenter = securityCenter;
+  public SmartHouseEngine(final List<Module> modules) {
+    this.modules = modules;
   }
 
-  public void initialize() {
-
+  public void run() {
+    modules.forEach(Module::initialize);
   }
 }
