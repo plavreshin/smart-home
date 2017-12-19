@@ -44,7 +44,7 @@ public class PowerManagementControl implements Module {
   public void onPriceChange(final PriceChangeEvent event) {
     log.info("Received priceChangeEvent: " + event);
     final List<Room> affected =
-        rooms.stream().filter(x -> ! x.getDevices().stream().filter(d -> d.getPeakPower() > 50).collect(
+        rooms.stream().filter(x -> !x.getDevices().stream().filter(d -> d.getPeakPower() > 50).collect(
             Collectors.toList()).isEmpty()).collect(Collectors.toList());
     log.info("These rooms are affected by price change: " + affected);
   }
