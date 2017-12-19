@@ -70,3 +70,8 @@ out/
 gradle
 gradlew
 *.bat
+.settings
+.project
+.classpath
+.metadata
+bin
