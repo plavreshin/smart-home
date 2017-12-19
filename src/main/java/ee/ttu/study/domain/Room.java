@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Data
 @Log
 public class Room {
@@ -18,17 +19,30 @@ public class Room {
   private Temperature temperature;
   private List<ElectricalDevice> devices = new ArrayList<>();
 
+  
   public Room(String id, String desc) {
     this.id = id;
     this.desc = desc;
   }
-
-  //@ requires device != null
-  //@ requires devices.size <= 1000
-  //@ ensures devices.size > 0
+  
+  //@ requires device.getPeakPower() > 100;
+  //@ requires device != null;
+  //@ ensures devices.size() == \old(devices.size);
+  //@
+  //@ also
+  //@
+  //@ requires device.getPeakPower() <= 100;
+  //@ requires device != null;
+  //@ requires devices.size() <= 1000;
+  //@ ensures devices.size() > 0;
+  //@ ensures devices.size() == \old(devices.size()) + 1;
+  
   public Room registerDevice(final ElectricalDevice device) {
-    this.devices.add(device);
-    return this;
+    if(device.getPeakPower() <= 100 && devices.size() <=1000) {
+    	this.devices.add(device);
+    }
+	return this;
+	
   }
 
   //@ invariant price >= 0 && price <= priceMin
@@ -50,7 +64,7 @@ public class Room {
         '}';
   }
 
-  //@ invariant temperature.current >= 0 && temperature.current <= thresholdMax
+  //@ invariant temperature.current >= 0 && temperature.current <= thresholdMax;
   public void updateTemperature(final Temperature temperature) {
     this.temperature = temperature;
   }

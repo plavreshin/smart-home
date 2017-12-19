@@ -15,32 +15,39 @@ public class PowerManagementControl implements Module {
   private List<ElectricalDevice> electricalDevices;
   private List<Room> rooms;
 
+  
   public PowerManagementControl() {
     EventBusEngine.register(this);
   }
 
-  //@ ensures electricalDevices != null
-  //@ ensures electricalDevices.size > 0
+  //@ ensures electricalDevices != null;
+  //@ ensures electricalDevices.size() > 0;
   public boolean isOperating() {
     return electricalDevices != null && !electricalDevices.isEmpty();
   }
 
-  //@ requires electricalDevices ! =null
+  //@ requires electricalDevices != null;
   public void setElectricalDevices(List<ElectricalDevice> electricalDevices) {
     this.electricalDevices = electricalDevices;
   }
 
-  //@ requires rooms ! =null
+  //@ requires rooms != null
   public void setRooms(List<Room> rooms) {
     this.rooms = rooms;
   }
 
-  //@ requires event ! =null
+  //@ requires event != null;
+  //@ ensures affected.size() >= 0;
+  //@ ensures (/forall Room r; r.getPeakPower() > 50; affected.contains(r));
+  
+  //@ 
+  
+  
   @Subscribe
   public void onPriceChange(final PriceChangeEvent event) {
     log.info("Received priceChangeEvent: " + event);
     final List<Room> affected =
-        rooms.stream().filter(x -> !x.getDevices().stream().filter(d -> d.getPeakPower() > 50).collect(
+        rooms.stream().filter(x -> ! x.getDevices().stream().filter(d -> d.getPeakPower() > 50).collect(
             Collectors.toList()).isEmpty()).collect(Collectors.toList());
     log.info("These rooms are affected by price change: " + affected);
   }

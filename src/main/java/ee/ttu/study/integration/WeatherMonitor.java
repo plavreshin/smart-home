@@ -14,6 +14,8 @@ import java.util.concurrent.TimeUnit;
 public class WeatherMonitor {
   private final ScheduledExecutorService executorService;
 
+  
+  
   public WeatherMonitor(final ScheduledExecutorService executorService) {
     this.executorService = executorService;
     this.executorService.scheduleWithFixedDelay(new TemperatureUpdate(), 1000, 5000, TimeUnit.MILLISECONDS);
@@ -21,7 +23,9 @@ public class WeatherMonitor {
 
   private static class TemperatureUpdate implements Runnable {
     private final SecureRandom random = new SecureRandom();
-
+    
+    
+    
     @Override
     public void run() {
       final Temperature temperature = new Temperature((double) random.nextInt(30));
