@@ -5,15 +5,16 @@ import ee.ttu.study.domain.PriceChangeEvent;
 import ee.ttu.study.domain.Room;
 import ee.ttu.study.domain.TemperatureChangeEvent;
 import ee.ttu.study.engine.EventBusEngine;
-import lombok.extern.java.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-@Log
 public class HeatingControl implements Module {
+  private static final Logger log = LoggerFactory.getLogger(HeatingControl.class);
   private List<Room> monitoredRooms;
-  
-  
+
+
   public HeatingControl(List<Room> monitoredRooms) {
     EventBusEngine.register(this);
     this.monitoredRooms = monitoredRooms;
@@ -30,7 +31,6 @@ public class HeatingControl implements Module {
   //@ requires Instant.now() - event.timestamp < 100;
   //@ ensures outDated = false;
   //@ Log.info("Received priceChangeEvent: " + event + "OutDated Information");
-  
   @Subscribe
   public void onPriceChange(final PriceChangeEvent event) {
     Boolean outDated = false;
@@ -40,7 +40,7 @@ public class HeatingControl implements Module {
 
   //@ requires event != null;
   @Subscribe
-  public void onTemperatureCHange(final TemperatureChangeEvent event) {
+  public void onTemperatureChange(final TemperatureChangeEvent event) {
     log.info("Received temperatureChangeEvent: " + event);
     monitoredRooms.forEach(x -> x.updateTemperature(event.getTemperature()));
   }

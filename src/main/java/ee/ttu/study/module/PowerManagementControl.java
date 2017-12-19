@@ -5,17 +5,18 @@ import ee.ttu.study.domain.ElectricalDevice;
 import ee.ttu.study.domain.PriceChangeEvent;
 import ee.ttu.study.domain.Room;
 import ee.ttu.study.engine.EventBusEngine;
-import lombok.extern.java.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Log
 public class PowerManagementControl implements Module {
+  private static final Logger log = LoggerFactory.getLogger(PowerManagementControl.class);
   private List<ElectricalDevice> electricalDevices;
   private List<Room> rooms;
 
-  
+
   public PowerManagementControl() {
     EventBusEngine.register(this);
   }
@@ -39,10 +40,6 @@ public class PowerManagementControl implements Module {
   //@ requires event != null;
   //@ ensures affected.size() >= 0;
   //@ ensures (/forall Room r; r.getPeakPower() > 50; affected.contains(r));
-  
-  //@ 
-  
-  
   @Subscribe
   public void onPriceChange(final PriceChangeEvent event) {
     log.info("Received priceChangeEvent: " + event);

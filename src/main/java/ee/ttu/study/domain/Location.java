@@ -1,3 +1,4 @@
+
 package ee.ttu.study.domain;
 
 public class Location {

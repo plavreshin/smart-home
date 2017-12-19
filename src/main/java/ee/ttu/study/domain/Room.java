@@ -19,12 +19,12 @@ public class Room {
   private Temperature temperature;
   private List<ElectricalDevice> devices = new ArrayList<>();
 
-  
+
   public Room(String id, String desc) {
     this.id = id;
     this.desc = desc;
   }
-  
+
   //@ requires device.getPeakPower() > 100;
   //@ requires device != null;
   //@ ensures devices.size() == \old(devices.size);
@@ -36,16 +36,16 @@ public class Room {
   //@ requires devices.size() <= 1000;
   //@ ensures devices.size() > 0;
   //@ ensures devices.size() == \old(devices.size()) + 1;
-  
+
   public Room registerDevice(final ElectricalDevice device) {
     if(device.getPeakPower() <= 100 && devices.size() <=1000) {
     	this.devices.add(device);
     }
 	return this;
-	
+
   }
 
-  //@ invariant price >= 0 && price <= priceMin
+  //@ invariant price >= 0 && price <= priceMin;
   public void calculateUsage(final BigDecimal price) {
     final List<String> usages = devices.stream().map(electricalDevice -> {
       BigDecimal costs = price.multiply(new BigDecimal(electricalDevice.getPeakPower()));
