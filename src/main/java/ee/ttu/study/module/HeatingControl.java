@@ -12,19 +12,33 @@ import java.util.List;
 @Log
 public class HeatingControl implements Module {
   private List<Room> monitoredRooms;
-
+  
+  
   public HeatingControl(List<Room> monitoredRooms) {
     EventBusEngine.register(this);
     this.monitoredRooms = monitoredRooms;
   }
 
+  /*Timing*/
+  //@ requires event != null;
+  //@ requires Instant.now() - event.timestamp < 100;
+  //@ ensures outDated = true;
+  //@
+  //@also
+  //@
+  //@requires event != null;
+  //@ requires Instant.now() - event.timestamp < 100;
+  //@ ensures outDated = false;
+  //@ Log.info("Received priceChangeEvent: " + event + "OutDated Information");
+  
   @Subscribe
-  //@ requires event != null
   public void onPriceChange(final PriceChangeEvent event) {
-    log.info("Received priceChangeEvent: " + event);
+    Boolean outDated = false;
+	log.info("Received priceChangeEvent: " + event);
     monitoredRooms.forEach(x -> x.calculateUsage(event.getPrice()));
   }
 
+  //@ requires event != null;
   @Subscribe
   public void onTemperatureCHange(final TemperatureChangeEvent event) {
     log.info("Received temperatureChangeEvent: " + event);

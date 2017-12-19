@@ -21,7 +21,9 @@ public class ElectricityProvider {
 
   private static class PriceChangeUpdate implements Runnable {
     private final SecureRandom random = new SecureRandom();
-
+    
+    
+    
     @Override
     public void run() {
       final PriceChangeEvent event = new PriceChangeEvent(Instant.now(), new BigDecimal(random.nextInt(100)));
