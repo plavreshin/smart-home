@@ -14,12 +14,12 @@ public class TemperatureChangeEvent {
     this.timestamp = timestamp;
   }
 
-  //@ ensures \result == temperature
+  //@ ensures \result == temperature;
   public Temperature getTemperature() {
     return temperature;
   }
 
-  //@ ensures \result == timestamp
+  //@ ensures \result == timestamp;
   public Instant getTimestamp() {
     return timestamp;
   }
