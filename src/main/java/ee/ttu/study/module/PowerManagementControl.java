@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class PowerManagementControl implements Module {
   private static final Logger log = LoggerFactory.getLogger(PowerManagementControl.class);
-  private List<ElectricalDevice> electricalDevices;
+  private /*@ spec_public @*/ List<ElectricalDevice> electricalDevices;
   private List<Room> rooms;
 
 
@@ -32,14 +32,12 @@ public class PowerManagementControl implements Module {
     this.electricalDevices = electricalDevices;
   }
 
-  //@ requires rooms != null
+  //@ requires rooms != null;
   public void setRooms(List<Room> rooms) {
     this.rooms = rooms;
   }
 
   //@ requires event != null;
-  //@ ensures affected.size() >= 0;
-  //@ ensures (/forall Room r; r.getPeakPower() > 50; affected.contains(r));
   @Subscribe
   public void onPriceChange(final PriceChangeEvent event) {
     log.info("Received priceChangeEvent: " + event);

@@ -4,7 +4,7 @@ public class Temperature {
   private Double lowest;
   private Double highest;
   private Double mean;
-  protected final Double current;
+  protected /*@ spec_public @*/ final Double current;
 
   public Temperature(Double current) {
     this.current = current;

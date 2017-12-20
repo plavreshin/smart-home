@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 public class PriceChangeEvent {
-  private final Instant timestamp;
-  private final BigDecimal price;
+  private /*@ spec_public @*/ final Instant timestamp;
+  private /*@ spec_public @*/ final BigDecimal price;
 
   //@ requires timestamp != null;
   //@ requires price != null;

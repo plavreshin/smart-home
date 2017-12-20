@@ -8,6 +8,8 @@ import ee.ttu.study.engine.EventBusEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 
 public class HeatingControl implements Module {
@@ -20,22 +22,30 @@ public class HeatingControl implements Module {
     this.monitoredRooms = monitoredRooms;
   }
 
+  //@ requires event != null;
+  @Subscribe
+  public void onPriceChange(final PriceChangeEvent event) {
+	if (isOutdated(event)) {
+	  log.info("Received priceChangeEvent: " + event);
+      monitoredRooms.forEach(x -> x.calculateUsage(event.getPrice()));
+	}
+  }
+  
   /*Timing*/
   //@ requires event != null;
-  //@ requires Instant.now() - event.timestamp < 100;
-  //@ ensures outDated = true;
+  //@ requires Duration.between(Instant.now(),event.timestamp).toMillis() > 1000;
+  //@ ensures \result == true;
   //@
   //@also
   //@
   //@requires event != null;
-  //@ requires Instant.now() - event.timestamp < 100;
-  //@ ensures outDated = false;
-  //@ Log.info("Received priceChangeEvent: " + event + "OutDated Information");
-  @Subscribe
-  public void onPriceChange(final PriceChangeEvent event) {
-    Boolean outDated = false;
-	log.info("Received priceChangeEvent: " + event);
-    monitoredRooms.forEach(x -> x.calculateUsage(event.getPrice()));
+  //@ requires Duration.between(Instant.now(),event.timestamp).toMillis() < 1000;
+  //@ ensures \result = false;
+  public boolean isOutdated(PriceChangeEvent event) {
+	if (Duration.between(Instant.now(),event.getTimestamp()).toMillis() > 1000) {
+      return true;
+    }
+	  return false;
   }
 
   //@ requires event != null;
