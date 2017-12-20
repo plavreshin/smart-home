@@ -5,37 +5,39 @@ import ee.ttu.study.domain.ElectricalDevice;
 import ee.ttu.study.domain.PriceChangeEvent;
 import ee.ttu.study.domain.Room;
 import ee.ttu.study.engine.EventBusEngine;
-import lombok.extern.java.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Log
 public class PowerManagementControl implements Module {
-  private List<ElectricalDevice> electricalDevices;
+  private static final Logger log = LoggerFactory.getLogger(PowerManagementControl.class);
+  private /*@ spec_public @*/ List<ElectricalDevice> electricalDevices;
   private List<Room> rooms;
+
 
   public PowerManagementControl() {
     EventBusEngine.register(this);
   }
 
-  //@ ensures electricalDevices != null
-  //@ ensures electricalDevices.size > 0
+  //@ ensures electricalDevices != null;
+  //@ ensures electricalDevices.size() > 0;
   public boolean isOperating() {
     return electricalDevices != null && !electricalDevices.isEmpty();
   }
 
-  //@ requires electricalDevices ! =null
+  //@ requires electricalDevices != null;
   public void setElectricalDevices(List<ElectricalDevice> electricalDevices) {
     this.electricalDevices = electricalDevices;
   }
 
-  //@ requires rooms ! =null
+  //@ requires rooms != null;
   public void setRooms(List<Room> rooms) {
     this.rooms = rooms;
   }
 
-  //@ requires event ! =null
+  //@ requires event != null;
   @Subscribe
   public void onPriceChange(final PriceChangeEvent event) {
     log.info("Received priceChangeEvent: " + event);
