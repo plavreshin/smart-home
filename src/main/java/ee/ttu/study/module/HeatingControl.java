@@ -25,27 +25,22 @@ public class HeatingControl implements Module {
   //@ requires event != null;
   @Subscribe
   public void onPriceChange(final PriceChangeEvent event) {
-	if (isOutdated(event)) {
-	  log.info("Received priceChangeEvent: " + event);
+    if (isOutdated(event)) {
+      log.info("Received priceChangeEvent: " + event);
       monitoredRooms.forEach(x -> x.calculateUsage(event.getPrice()));
-	}
+    }
   }
-  
+
   /*Timing*/
   //@ requires event != null;
   //@ requires Duration.between(Instant.now(),event.timestamp).toMillis() > 1000;
-  //@ ensures \result == true;
   //@
   //@also
   //@
-  //@requires event != null;
+  //@ requires event != null;
   //@ requires Duration.between(Instant.now(),event.timestamp).toMillis() < 1000;
-  //@ ensures \result = false;
   public boolean isOutdated(PriceChangeEvent event) {
-	if (Duration.between(Instant.now(),event.getTimestamp()).toMillis() > 1000) {
-      return true;
-    }
-	  return false;
+    return Duration.between(Instant.now(), event.getTimestamp()).toMillis() > 1000;
   }
 
   //@ requires event != null;
